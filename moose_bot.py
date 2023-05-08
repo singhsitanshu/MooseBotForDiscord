@@ -44,10 +44,22 @@ async def on_message(msg):
             usertag = username.split("#")
             response_mmr = requests.get(f"https://api.henrikdev.xyz/valorant/v1/mmr/na/{usertag[0]}/{usertag[1]}")
             format_mmr = response_mmr.json()
+            print(format_mmr)
             url_rank = format_mmr['data']['images']['large']
             response_rank = requests.get(url_rank)
             with open("rank.png", "wb") as f:
                 f.write(response_rank.content)
             await msg.channel.send(file=discord.File("rank.png"))
+        if msg.content.lower().startswith("search"):
+            query = msg.content.replace("search", "")
+            query = query.replace("<@1104982247964160071>", "")
+            url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + query
+            response = requests.get(url)
+            data = response.json()
+            try:
+                summary = data["extract"]
+                await msg.channel.send(summary)
+            except:
+                await msg.channel.send("There is not a wikipedia page on the requested subject.")
 
 client.run(token)
