@@ -38,8 +38,8 @@ async def on_message(msg):
             with open("choppa.jpg", "rb") as f:
                 file = discord.File(f)
                 await msg.channel.send(file=file)
-        if msg.content.lower().startswith("?stats"):
-            username = msg.content.replace("?stats", "")
+        if msg.content.lower().startswith("?rank"):
+            username = msg.content.replace("?rank", "")
             username = username.replace("<@1104982247964160071>", "")
             usertag = username.split("#")
             response_mmr = requests.get(f"https://api.henrikdev.xyz/valorant/v1/mmr/na/{usertag[0]}/{usertag[1]}")
