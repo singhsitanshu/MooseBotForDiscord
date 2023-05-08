@@ -30,17 +30,13 @@ async def on_message(msg):
     if msg.author != client.user:
         if msg.content.lower().startswith("?hi"):
             await msg.channel.send(f"stfu {msg.author.display_name}")
-
-@client.event
-async def on_message(msg):
-    if msg.author != client.user:
         if msg.content.lower().startswith("?info"):
             await msg.channel.send(random.choice(bat_quotes))
-
-@client.event
-async def on_message(msg):
-    if msg.author != client.user:
         if msg.content.lower().startswith("?weather"):
             await msg.channel.send(f'{kelvin_to_farenheit(format["main"]["temp"])} Fahrenheit')
+        if msg.content.lower().startswith("?test"):
+            with open("choppa.jpg", "rb") as f:
+                file = discord.File(f)
+                await msg.channel.send(file=file)
 
 client.run(token)
