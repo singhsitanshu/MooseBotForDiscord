@@ -28,18 +28,18 @@ async def on_ready():
 @client.event
 async def on_message(msg):
     if msg.author != client.user:
-        if msg.content.lower().startswith("?hi"):
+        if msg.content.lower().startswith("hi"):
             await msg.channel.send(f"stfu {msg.author.display_name}")
-        if msg.content.lower().startswith("?info"):
+        if msg.content.lower().startswith("info"):
             await msg.channel.send(random.choice(bat_quotes))
-        if msg.content.lower().startswith("?weather"):
+        if msg.content.lower().startswith("weather"):
             await msg.channel.send(f'{kelvin_to_farenheit(formatWeather["main"]["temp"])} Fahrenheit')
-        if msg.content.lower().startswith("?test"):
+        if msg.content.lower().startswith("test"):
             with open("choppa.jpg", "rb") as f:
                 file = discord.File(f)
                 await msg.channel.send(file=file)
-        if msg.content.lower().startswith("?rank"):
-            username = msg.content.replace("?rank", "")
+        if msg.content.lower().startswith("rank"):
+            username = msg.content.replace("rank", "")
             username = username.replace("<@1104982247964160071>", "")
             usertag = username.split("#")
             response_mmr = requests.get(f"https://api.henrikdev.xyz/valorant/v1/mmr/na/{usertag[0]}/{usertag[1]}")
