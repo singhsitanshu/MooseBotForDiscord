@@ -2,13 +2,13 @@ import discord
 import random
 import requests
 
-token = ""
+token = "MTEwNDk4MjI0Nzk2NDE2MDA3MQ.GSKBNi.FyvcYCEP2dL5RE-noknJfJO7TA7RO19Vagzpxs"
 
-api_key = ""
+api_key = "25a8bd03eb02605ef5235259141e2e33"
 location = "Round Rock"
 
-response = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}")
-format = response.json()
+responseWeather = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}")
+formatWeather = responseWeather.json()
 
 def kelvin_to_farenheit(k):
     c = (k-273.15)
@@ -33,10 +33,21 @@ async def on_message(msg):
         if msg.content.lower().startswith("?info"):
             await msg.channel.send(random.choice(bat_quotes))
         if msg.content.lower().startswith("?weather"):
-            await msg.channel.send(f'{kelvin_to_farenheit(format["main"]["temp"])} Fahrenheit')
+            await msg.channel.send(f'{kelvin_to_farenheit(formatWeather["main"]["temp"])} Fahrenheit')
         if msg.content.lower().startswith("?test"):
             with open("choppa.jpg", "rb") as f:
                 file = discord.File(f)
                 await msg.channel.send(file=file)
+        if msg.content.lower().startswith("?stats"):
+            username = msg.content.replace("?stats", "")
+            username = username.replace("<@1104982247964160071>", "")
+            usertag = username.split("#")
+            response_mmr = requests.get(f"https://api.henrikdev.xyz/valorant/v1/mmr/na/{usertag[0]}/{usertag[1]}")
+            format_mmr = response_mmr.json()
+            url_rank = format_mmr['data']['images']['large']
+            response_rank = requests.get(url_rank)
+            with open("rank.png", "wb") as f:
+                f.write(response_rank.content)
+            await msg.channel.send(file=discord.File("rank.png"))
 
 client.run(token)
