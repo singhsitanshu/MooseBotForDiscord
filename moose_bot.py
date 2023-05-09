@@ -1,6 +1,8 @@
 import discord
 import random
 import requests
+import openai
+import os
 
 token = "MTEwNDk4MjI0Nzk2NDE2MDA3MQ.GSKBNi.FyvcYCEP2dL5RE-noknJfJO7TA7RO19Vagzpxs"
 
@@ -44,7 +46,6 @@ async def on_message(msg):
             usertag = username.split("#")
             response_mmr = requests.get(f"https://api.henrikdev.xyz/valorant/v1/mmr/na/{usertag[0]}/{usertag[1]}")
             format_mmr = response_mmr.json()
-            print(format_mmr)
             url_rank = format_mmr['data']['images']['large']
             response_rank = requests.get(url_rank)
             with open("rank.png", "wb") as f:
@@ -61,5 +62,6 @@ async def on_message(msg):
                 await msg.channel.send(summary)
             except:
                 await msg.channel.send("There is not a wikipedia page on the requested subject.")
+        
 
 client.run(token)
