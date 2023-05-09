@@ -4,9 +4,9 @@ import requests
 import openai
 import os
 
-token = "MTEwNDk4MjI0Nzk2NDE2MDA3MQ.GSKBNi.FyvcYCEP2dL5RE-noknJfJO7TA7RO19Vagzpxs"
+token = ""
 
-api_key = "25a8bd03eb02605ef5235259141e2e33"
+api_key = ""
 location = "Round Rock"
 
 responseWeather = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}")
