@@ -3,15 +3,16 @@ import random
 import requests
 import os
 import asyncio
+import config
 
 from discord.ext import commands
 from discord import FFmpegPCMAudio
 
 folders = ["999 EP", "Affliction EP", "All Alone", "BINGEDRINKINGMUSIC", "Blessed Boys", "Codeine Cobain", "Die To Live", "Evil Twins", "Extras", "Good Bye _ Good Riddance II", "Heartbroken In Hollywood", "It_s A Crazy WRLD", "Love _ Drugs", "No Shame", "Mello Made It Right", "Outsiders", "OVERDOSED", "nothings_s different_ -3", "Rich _Dangerous", "Tales Of A Loner", "The Party Never Ends", "Ups _ Downs", "XO"]
 
-token = ""
+token = config.token
 
-api_key = ""
+api_key = config.weather_token
 location = "Round Rock"
 
 responseWeather = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}")
