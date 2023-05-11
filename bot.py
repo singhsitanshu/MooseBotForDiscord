@@ -9,9 +9,9 @@ from discord import FFmpegPCMAudio
 
 folders = ["999 EP", "Affliction EP", "All Alone", "BINGEDRINKINGMUSIC", "Blessed Boys", "Codeine Cobain", "Die To Live", "Evil Twins", "Extras", "Good Bye _ Good Riddance II", "Heartbroken In Hollywood", "It_s A Crazy WRLD", "Love _ Drugs", "No Shame", "Mello Made It Right", "Outsiders", "OVERDOSED", "nothings_s different_ -3", "Rich _Dangerous", "Tales Of A Loner", "The Party Never Ends", "Ups _ Downs", "XO"]
 
-token = "MTEwNDk4MjI0Nzk2NDE2MDA3MQ.GJKWv2.Ksd9QpRDnxqgLPpE1UBQrfrDhDZOeyh-QbMl8E"
+token = ""
 
-api_key = "25a8bd03eb02605ef5235259141e2e33"
+api_key = ""
 location = "Round Rock"
 
 responseWeather = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}")
@@ -30,6 +30,8 @@ bot = commands.Bot(command_prefix='m', intents=intents)
 
 @bot.event
 async def on_ready():
+    channel = bot.get_channel(979789830068261005)
+    await channel.send("")
     print(f"Moose bot is here as {bot.user}")
 
 @bot.command()
