@@ -7,6 +7,8 @@ import asyncio
 from discord.ext import commands
 from discord import FFmpegPCMAudio
 
+folders = ["999 EP", "Affliction EP", "All Alone", "BINGEDRINKINGMUSIC", "Blessed Boys", "Codeine Cobain", "Die To Live", "Evil Twins", "Extras", "Good Bye _ Good Riddance II", "Heartbroken In Hollywood", "It_s A Crazy WRLD", "Love _ Drugs", "No Shame", "Mello Made It Right", "Outsiders", "OVERDOSED", "nothings_s different_ -3", "Rich _Dangerous", "Tales Of A Loner", "The Party Never Ends", "Ups _ Downs", "XO"]
+
 token = "MTEwNDk4MjI0Nzk2NDE2MDA3MQ.GJKWv2.Ksd9QpRDnxqgLPpE1UBQrfrDhDZOeyh-QbMl8E"
 
 api_key = "25a8bd03eb02605ef5235259141e2e33"
@@ -24,7 +26,7 @@ def kelvin_to_farenheit(k):
 bat_quotes = ["I am vengeance, I am the night", "It's not who I am underneath, but what I do that defines me.", "The night is darkest just before the dawn. And I promise you, the dawn is coming.", "I have one power. I never give up.", "You either die a hero or you live long enough to see yourself become the villain.", "A hero can be anyone, even a man doing something as simple and reassuring as putting a coat around a little boy's shoulders to let him know that the world hadn't ended."]
 
 intents = discord.Intents.default()
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='m', intents=intents)
 
 @bot.event
 async def on_ready():
@@ -93,7 +95,9 @@ async def play(ctx):
 
     try:
         # Load the audio file
-        audio_source = discord.FFmpegPCMAudio("onepiece.mp3")
+        folder = random.choice(folders)
+        
+        audio_source = discord.FFmpegPCMAudio(f"C:/Users/singh/Music/Juice WRLD/{folder}/{random.choice(os.listdir('C:/Users/singh/Music/Juice WRLD/' + folder))}")
 
         # Play the audio
         vc.play(audio_source)
