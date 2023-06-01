@@ -3,9 +3,7 @@ import os, asyncio, openai, requests, random, discord, youtube_dl
 from discord.ext import commands
 
 token = "MTEwNDk4MjI0Nzk2NDE2MDA3MQ.GmL5FY.VJKp-qz4ayNH-njBn0re3RXI8IKTsmfsK4Ik4U"
-youtube_key = "AIzaSyDibLnlmvjKGp3CRBu2tH93MhXi0ozIwgc"
 
-api_key = "25a8bd03eb02605ef5235259141e2e33"
 
 location = "Round Rock"
 
