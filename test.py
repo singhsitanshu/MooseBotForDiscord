@@ -1,15 +1,11 @@
-import openai
+import youtube_dl
 import os
+import requests
 
-openai.api_key = "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"
-model_engine = "davinci"
-prompt = "What were the events in the American Revolution?"
-max_length = 1000
+query = "trademark usa"
+youtube_key = "AIzaSyDibLnlmvjKGp3CRBu2tH93MhXi0ozIwgc"
 
-response = openai.Completion.create(
-    engine=model_engine,
-    prompt=prompt,
-    max_tokens=max_length
-)
+response = requests.get(f"https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q={query}&type=video&key={youtube_key}")
+format = response.json()
 
-print(response.choices[0].text)
+print(format['items'][0]['id']['videoId'])

@@ -1,22 +1,16 @@
-import discord
-import random
-import requests
-import os
-import asyncio
-import config
+import os, asyncio, openai, requests, random, discord, youtube_dl
 
 from discord.ext import commands
-from discord import FFmpegPCMAudio
 
-folders = ["999 EP", "Affliction EP", "All Alone", "BINGEDRINKINGMUSIC", "Blessed Boys", "Codeine Cobain", "Die To Live", "Evil Twins", "Extras", "Good Bye _ Good Riddance II", "Heartbroken In Hollywood", "It_s A Crazy WRLD", "Love _ Drugs", "No Shame", "Mello Made It Right", "Outsiders", "OVERDOSED", "nothings_s different_ -3", "Rich _Dangerous", "Tales Of A Loner", "The Party Never Ends", "Ups _ Downs", "XO"]
-
-token = config.token
-
-api_key = config.weather_token
 location = "Round Rock"
 
 responseWeather = requests.get(f"https://api.openweathermap.org/data/2.5/weather?q={location}&appid={api_key}")
 formatWeather = responseWeather.json()
+
+yt_dl_opts = {'format': 'bestaudio/best'}
+ytdl = youtube_dl.YoutubeDL(yt_dl_opts)
+
+ffmpeg_options = {'options': "-vn"}
 
 def kelvin_to_farenheit(k):
     c = (k-273.15)
@@ -27,17 +21,36 @@ def kelvin_to_farenheit(k):
 bat_quotes = ["I am vengeance, I am the night", "It's not who I am underneath, but what I do that defines me.", "The night is darkest just before the dawn. And I promise you, the dawn is coming.", "I have one power. I never give up.", "You either die a hero or you live long enough to see yourself become the villain.", "A hero can be anyone, even a man doing something as simple and reassuring as putting a coat around a little boy's shoulders to let him know that the world hadn't ended."]
 
 intents = discord.Intents.default()
-bot = commands.Bot(command_prefix='m', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.event
 async def on_ready():
-    channel = bot.get_channel(979789830068261005)
-    await channel.send("")
+    channel = bot.get_channel(895502770260570123)
+    await channel.send("exothermic reactions")
     print(f"Moose bot is here as {bot.user}")
+
+@bot.event
+async def on_message(message):
+    await bot.process_commands(message)
 
 @bot.command()
 async def hi(ctx):
     await ctx.send(f"stfu {ctx.author.display_name}")
+
+@bot.command()
+async def chat(ctx):
+    replied_message = ctx.reference
+    if replied_message and replied_message.message_id:
+        channel = bot.get_channel(replied_message.channel_id)
+        message = await channel.fetch_message(replied_message.message_id)
+    url = "https://en.wikipedia.org/api/rest_v1/page/summary/" + message.content
+    response = requests.get(url)
+    data = response.json()
+    try:
+        summary = data["extract"]
+        await msg.channel.send(summary)
+    except:
+        await msg.channel.send("no")
 
 @bot.command()
 async def info(ctx):
@@ -87,30 +100,35 @@ async def join(ctx):
     await channel.connect()
 
 @bot.command()
-async def play(ctx):
+async def real(ctx):
+    replied_message = ctx.message.reference
+    if replied_message and replied_message.cached_message.content:
+        replied_content = replied_message.cached_message.content
+        search(ctx, replied_content)
+
+@bot.command()
+async def play(ctx, *, query):
     if ctx.author.voice is None:
         await ctx.send("You are not connected to a voice channel.")
         return
 
-    # Join the voice channel of the user who called the command
     voice_channel = ctx.author.voice.channel
     vc = await voice_channel.connect()
 
     try:
-        # Load the audio file
-        folder = random.choice(folders)
-        
-        audio_source = discord.FFmpegPCMAudio(f"C:/Users/singh/Music/Juice WRLD/{folder}/{random.choice(os.listdir('C:/Users/singh/Music/Juice WRLD/' + folder))}")
+        response = requests.get(f"https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&q={query}&type=video&key={youtube_key}")
+        format = response.json()
+        url = "https://www.youtube.com/watch?v=" + format['items'][0]['id']['videoId']
+        await ctx.send(url)
+
+        loop = asyncio.get_event_loop()
+        data = await loop.run_in_executor(None, lambda: ytdl.extract_info(url, download=False))
+
+        song = data['url']
+        player = discord.FFmpegPCMAudio(song, **ffmpeg_options)
 
         # Play the audio
-        vc.play(audio_source)
-
-        # Wait for the audio to finish playing
-        while vc.is_playing():
-            await asyncio.sleep(1)
-
-        # Disconnect from the voice channel
-        await vc.disconnect()
+        vc.play(player)
 
     except Exception as e:
         print(e)
