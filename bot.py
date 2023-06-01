@@ -116,7 +116,8 @@ async def play(ctx, *, query):
     if ctx.author.voice is None:
         await ctx.send("You are not connected to a voice channel.")
         return
-
+    
+    query = query.replace("<@1104982247964160071>", "")
     voice_channel = ctx.author.voice.channel
     vc = await voice_channel.connect()
 
