@@ -2,8 +2,7 @@ import os, asyncio, openai, requests, random, discord, youtube_dl
 
 from discord.ext import commands
 
-token = "MTEwNDk4MjI0Nzk2NDE2MDA3MQ.GmL5FY.VJKp-qz4ayNH-njBn0re3RXI8IKTsmfsK4Ik4U"
-
+token = ""
 
 location = "Round Rock"
 
